@@ -89,8 +89,6 @@ export const twoSum: Problem = {
 </li>`,
 	handlerFunction: handlerTwoSum,
 	starterCodeJS: starterCodeTwoSumJS,
-	starterCodePY: starterCodeTwoSumPython,
-	starterCodeCPP: starterCodeTwoSumCPP,
 	order: 1,
 	starterFunctionName: "function twoSum(",
 };
