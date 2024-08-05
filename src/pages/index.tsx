@@ -1,14 +1,14 @@
 import ProblemTable from "@/components/ProblemsTable/ProblemTable";
 import Topbar from "@/components/Topbar/Topbar";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { doc, setDoc } from "firebase/firestore"; 
-import { firestore } from "@/firebase/firebase";
+import { firestore, auth } from "@/firebase/firebase"; // import auth from your firebase config
 import useHasMounted from "@/hooks/useHasMounted";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Home() {
   const hasMounted = useHasMounted();
-
   const [loadingProblems, setLoadingProblems] = useState(false);
   const [inputs, setInputs] = useState({
     id: '',
@@ -21,6 +21,19 @@ export default function Home() {
     likes: 0,
     dislikes: 0,
   });
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && user.email === "trungkdxl1000@gmail.com") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs({
@@ -39,7 +52,6 @@ export default function Home() {
     alert("Saved to DB");
   };
 
-  // If not mounted, return null
   if (!hasMounted) return null;
 
   return (
@@ -82,71 +94,72 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {/* Always render ProblemTable */}
                 <ProblemTable setLoadingProblems={setLoadingProblems} />
               </tbody>
             </table>
           </div>
 
-          {/* Form Section */}
-          <form
-            className="mt-8 bg-white p-6 rounded-lg shadow-lg max-w-sm"
-            onSubmit={handleSubmit}
-          >
-            <h2 className="text-lg font-semibold mb-4">Thêm Bài Tập Mới</h2>
-            <input
-              onChange={handleInputChange}
-              className="w-full mb-4 p-2 border border-gray-300 rounded"
-              type="text"
-              placeholder="Problem ID"
-              name="id"
-            />
-            <input
-              onChange={handleInputChange}
-              className="w-full mb-4 p-2 border border-gray-300 rounded"
-              type="text"
-              placeholder="Title"
-              name="title"
-            />
-            <input
-              onChange={handleInputChange}
-              className="w-full mb-4 p-2 border border-gray-300 rounded"
-              type="text"
-              placeholder="Difficulty"
-              name="difficulty"
-            />
-            <input
-              onChange={handleInputChange}
-              className="w-full mb-4 p-2 border border-gray-300 rounded"
-              type="text"
-              placeholder="Category"
-              name="category"
-            />
-            <input
-              onChange={handleInputChange}
-              className="w-full mb-4 p-2 border border-gray-300 rounded"
-              type="text"
-              placeholder="Order"
-              name="order"
-            />
-            <input
-              onChange={handleInputChange}
-              className="w-full mb-4 p-2 border border-gray-300 rounded"
-              type="text"
-              placeholder="Video ID (optional)"
-              name="videoId"
-            />
-            <input
-              onChange={handleInputChange}
-              className="w-full mb-4 p-2 border border-gray-300 rounded"
-              type="text"
-              placeholder="Link (optional)"
-              name="link"
-            />
-            <button className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700">
-              Save to DB
-            </button>
-          </form>
+          {/* Render form only if the user is an admin */}
+          {isAdmin && (
+            <form
+              className="mt-8 bg-white p-6 rounded-lg shadow-lg max-w-sm"
+              onSubmit={handleSubmit}
+            >
+              <h2 className="text-lg font-semibold mb-4">Thêm Bài Tập Mới</h2>
+              <input
+                onChange={handleInputChange}
+                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                type="text"
+                placeholder="Problem ID"
+                name="id"
+              />
+              <input
+                onChange={handleInputChange}
+                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                type="text"
+                placeholder="Title"
+                name="title"
+              />
+              <input
+                onChange={handleInputChange}
+                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                type="text"
+                placeholder="Difficulty"
+                name="difficulty"
+              />
+              <input
+                onChange={handleInputChange}
+                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                type="text"
+                placeholder="Category"
+                name="category"
+              />
+              <input
+                onChange={handleInputChange}
+                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                type="text"
+                placeholder="Order"
+                name="order"
+              />
+              <input
+                onChange={handleInputChange}
+                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                type="text"
+                placeholder="Video ID (optional)"
+                name="videoId"
+              />
+              <input
+                onChange={handleInputChange}
+                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                type="text"
+                placeholder="Link (optional)"
+                name="link"
+              />
+              <button className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700">
+                Save to DB
+              </button>
+            </form>
+          )}
         </div>
       </main>
     </>
