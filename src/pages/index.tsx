@@ -63,7 +63,10 @@ export default function Home() {
         <Topbar />
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-200">
-            &ldquo; Danh Sách Bài Tập &rdquo;
+            Danh Sách Bài Tập
+          </h1>
+          <h1 className="text-1xl font-semibold text-center text-dark-blue-s dark:text-gray-200">
+          ĐĂNG BÀI TẬP GỬI QUA GMAIL:TRUNGKDXL1000@GMAIL.COM
           </h1>
           <div className="relative overflow-x-auto mt-8 bg-white shadow-lg rounded-lg">
             {loadingProblems && (
