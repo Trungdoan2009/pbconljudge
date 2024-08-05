@@ -70,8 +70,6 @@ export const validParentheses: Problem = {
 <li class='mt-2 '><code>s</code> consists of parentheses only <code class="text-md">'()[]{}'</code>.</li>`,
 	handlerFunction: validParenthesesHandler,
 	starterCodeJS: starterCodeValidParenthesesJS,
-	starterCodeCPP: starterCodeValidParenthesesCPP,
-	starterCodePY: starterCodeValidParenthesesPY,
 	starterFunctionName: "function validParentheses(",
 	order: 4,
 };
