@@ -15,8 +15,6 @@ export type Problem = {
 	constraints: string;
 	order: number;
 	starterCodeJS: string;
-	starterCodePY: string;
-	starterCodeCPP: string;
 	handlerFunction: ((fn: any) => boolean) | string;
 	starterFunctionName: string;
 };
